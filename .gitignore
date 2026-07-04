@@ -1,0 +1,97 @@
+# =========================
+# Build
+# =========================
+
+bin/
+obj/
+out/
+artifacts/
+TestResults/
+coverage/
+
+*.trx
+*.coverage
+*.coveragexml
+
+# =========================
+# IDE
+# =========================
+
+.vs/
+.vscode/
+.idea/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# Operating System
+# =========================
+
+Thumbs.db
+.DS_Store
+
+# =========================
+# Local Configuration
+# =========================
+
+.env
+.env.*
+*.local.json
+
+appsettings.Local.json
+appsettings.Development.local.json
+
+# =========================
+# Secrets
+# =========================
+
+/secrets/
+
+*.pem
+*.key
+*.crt
+*.pfx
+
+# =========================
+# Runtime Data
+# =========================
+
+/cache/
+/output/
+/voices/
+/models/
+/data/
+
+# =========================
+# Audio
+# =========================
+
+*.wav
+*.mp3
+*.ogg
+*.aac
+*.flac
+*.m4a
+
+# =========================
+# AI Models
+# =========================
+
+*.onnx
+*.gguf
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+
+# =========================
+# Logs
+# =========================
+
+logs/
+
+*.log

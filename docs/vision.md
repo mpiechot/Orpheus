@@ -22,7 +22,7 @@ A client should only need to provide:
 - persona
 - optional context
 
-Orpheus decides how the output should look and sound.
+Orpheus decides how the output should look and sound, then asks the configured speech provider to synthesize or stub audio.
 
 Example:
 
@@ -38,7 +38,7 @@ Output
 
 "In 500 meters, turn right you should."
 
-The same request could later produce audio through any configured TTS provider.
+The same request should produce an audio result through any configured TTS provider. In early local builds this may be a deterministic stub URI rather than a real media file.
 
 ---
 
@@ -80,7 +80,7 @@ The engine should remain reusable.
 
 Transform text.
 
-Generate speech.
+Generate speech audio.
 
 Manage personas.
 

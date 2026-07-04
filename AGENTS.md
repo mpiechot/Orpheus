@@ -4,9 +4,9 @@
 
 Orpheus is a local Persona Speech Engine.
 
-The repository provides reusable infrastructure for transforming text into persona-specific speech and optionally generating spoken audio.
+The repository provides reusable infrastructure for transforming text into persona-specific speech and generating spoken audio through configured providers.
 
-The project intentionally remains generic.
+The project intentionally remains generic in implementation, provider wiring, and committed assets.
 
 It must never contain:
 
@@ -18,7 +18,9 @@ It must never contain:
 - API secrets
 - proprietary assets
 
-Users are expected to configure their own local providers and assets outside of Git.
+Persona presets may explicitly name the fictional characters, games, movies, or other works they are inspired by, as long as they remain text-only configuration. Those presets must not include protected audio, extracted assets, voice models, samples, or provider secrets.
+
+Users are expected to configure their own local providers, voices, models, and runtime assets outside of Git.
 
 ---
 
@@ -90,15 +92,15 @@ Avoid
 
 ## Repository Scope
 
-The repository contains infrastructure only.
+The repository contains engine infrastructure and text-only persona configuration.
 
 It does not ship voices.
 
 It does not ship AI models.
 
-It does not ship copyrighted personas.
+It does not ship copyrighted audio, protected assets, trained voice models, or generated media.
 
-Sample personas must remain generic.
+Sample personas may be generic or explicitly inspired by named works and characters, but they must remain text-only.
 
 Allowed examples include:
 
@@ -106,8 +108,9 @@ Allowed examples include:
 - calm-guide
 - pirate-narrator
 - sarcastic-ai
+- portal-announcer
 
-Avoid names of movies, games, actors or copyrighted characters.
+Do not include voice samples, extracted dialogue, proprietary prompt dumps, or audio that attempts to distribute a protected voice.
 
 ---
 
@@ -118,6 +121,8 @@ Always build the simplest deterministic implementation first.
 External AI providers are introduced only after stable abstractions exist.
 
 Never integrate multiple providers before the interfaces have stabilized.
+
+Audio generation is a core feature of the engine. The first implementation may use a deterministic stub provider, but the architecture must treat synthesis as part of the main speech pipeline rather than an optional afterthought.
 
 ---
 

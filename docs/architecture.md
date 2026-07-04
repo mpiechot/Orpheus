@@ -45,7 +45,7 @@ Initial responsibilities:
 - stub persona transformer
 - stub TTS provider
 - in-memory persona repository
-- sample persona loading
+- built-in sample persona registration
 - audio cache later
 
 Future responsibilities:
@@ -78,7 +78,7 @@ CLI exposes local command-line access.
 
 Initial command:
 
-- speak or transform a text with a selected persona
+- speak a text with a selected persona and print transformed text plus audio URI
 
 ## Main Flow
 
@@ -86,7 +86,7 @@ Initial command:
 2. API or CLI creates a speech request.
 3. Persona repository resolves the persona.
 4. Persona transformer creates persona-specific text.
-5. TTS provider optionally creates audio.
+5. TTS provider creates or stubs audio output.
 6. Audio cache stores or reuses generated audio.
 7. Response returns transformed text and optional audio location.
 
@@ -101,8 +101,8 @@ Initial interfaces:
 
 ## Safety Boundary
 
-Voice models, samples, generated audio, and secrets are runtime data.
+Voice models, samples, generated audio, proprietary assets, and secrets are runtime data.
 
 They must not be committed to the repository.
 
-The repository should provide abstractions and documentation, not protected content.
+The repository may provide text-only persona presets, including presets that name their inspirations. It must not provide protected audio, extracted assets, trained voice models, generated media, or secrets.

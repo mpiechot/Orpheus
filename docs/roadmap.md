@@ -4,6 +4,8 @@
 
 Goal: Create a clean .NET solution.
 
+Status: Complete.
+
 Deliverables:
 
 - solution file
@@ -22,6 +24,8 @@ Deliverables:
 
 Goal: Define the stable domain model.
 
+Status: Complete for the deterministic V1 pipeline.
+
 Deliverables:
 
 - Persona
@@ -35,12 +39,14 @@ Deliverables:
 
 ## M3 - Stub Speech Pipeline
 
-Goal: Make the full pipeline work without external services.
+Goal: Make the full text and audio pipeline work without external services.
+
+Status: Complete for API, CLI, and tests.
 
 Deliverables:
 
 - deterministic persona transformer
-- stub TTS provider
+- deterministic stub TTS provider returning an audio result
 - POST /speak endpoint
 - CLI command
 - tests

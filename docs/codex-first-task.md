@@ -4,7 +4,7 @@ Set up the initial Orpheus repository.
 
 ## Goal
 
-Create a working .NET solution with a deterministic local speech pipeline.
+Create a working .NET solution with a deterministic local speech and audio pipeline.
 
 The first version must not use:
 
@@ -67,7 +67,7 @@ Output:
 
 In 500 meters, turn right, you should.
 
-The stub TTS provider may return no audio or a placeholder AudioResult.
+The stub TTS provider should return a deterministic placeholder AudioResult. It must not write generated audio files.
 
 ## Required API
 
@@ -85,7 +85,7 @@ Example response:
 {
   "persona": "wise-master",
   "text": "In 500 meters, turn right, you should.",
-  "audioFile": null
+  "audioFile": "stub://wise-master-placeholder/speech"
 }
 
 ## Required CLI
@@ -103,6 +103,7 @@ Add tests for:
 
 - core model creation
 - deterministic transformation
+- deterministic audio result creation
 - API /speak happy path
 - unknown persona handling
 - empty text validation
@@ -119,7 +120,7 @@ Do not commit audio files.
 
 Do not commit model files.
 
-Do not hard-code protected character names as built-in presets.
+Do not commit protected audio, extracted assets, trained voice models, generated media, or secrets. Text-only persona presets may name their inspirations.
 
 Use the current persona JSON structure with:
 

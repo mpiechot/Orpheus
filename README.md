@@ -2,9 +2,9 @@
 
 Orpheus is a local persona speech engine.
 
-It transforms plain text or structured events into persona-specific text and optionally into spoken audio.
+It transforms plain text or structured events into persona-specific text and generates spoken audio through configured providers.
 
-The project provides generic infrastructure only. It does not ship copyrighted voices, celebrity voices, character voices, trained voice models, samples, generated audio, secrets, or proprietary assets.
+The project provides generic engine infrastructure and text-only persona configuration. It does not ship copyrighted voices, celebrity voices, character voices, trained voice models, samples, generated audio, secrets, or proprietary assets.
 
 ## Goal
 
@@ -12,7 +12,7 @@ Orpheus provides reusable infrastructure for:
 
 - persona-based text transformation
 - text-to-speech provider abstraction
-- audio generation
+- audio generation as a first-class pipeline step
 - audio caching
 - API access
 - CLI access
@@ -34,7 +34,7 @@ Users may configure their own local personas, voices, models, and providers outs
 
 The first milestone is a deterministic local prototype.
 
-V1 should include:
+V1 currently includes:
 
 - .NET solution
 - Orpheus.Core
@@ -46,9 +46,35 @@ V1 should include:
 - stub persona transformer
 - stub TTS provider
 - POST /speak endpoint
-- CLI command for transforming text
+- CLI command for generating transformed text and an audio result
 
-No real AI provider is required for V1.
+No real AI provider or real voice provider is required for V1, but the local stub pipeline should still return a deterministic audio result shape so clients can build against audio generation from the beginning.
+
+## Build and Test
+
+Requirements:
+
+- .NET 8 SDK or newer
+
+Commands:
+
+```powershell
+dotnet build Orpheus.sln
+dotnet test Orpheus.sln
+```
+
+## CLI Usage
+
+```powershell
+dotnet run --project src/Orpheus.Cli/Orpheus.Cli.csproj -- wise-master "In 500 meters, turn right."
+```
+
+Output:
+
+```text
+In 500 meters, turn right, you should.
+stub://wise-master-placeholder/speech
+```
 
 ## Example API
 
@@ -63,11 +89,13 @@ Request:
 
 Response:
 
+```json
 {
   "persona": "wise-master",
   "text": "In 500 meters, turn right, you should.",
-  "audioFile": null
+  "audioFile": "stub://wise-master-placeholder/speech"
 }
+```
 
 ## Persona Format
 
@@ -83,7 +111,7 @@ Example fields:
 - voice.voiceId
 - voice.style
 
-Personas should be generic enough to be safely committed unless they are private user personas.
+Personas are text-only configuration. They may be generic, or they may explicitly describe the fictional character, game, movie, or other work they are inspired by. Committed personas must not include protected audio, extracted dialogue, proprietary assets, trained voice models, provider secrets, or generated audio.
 
 Private personas should be placed outside Git or in ignored local folders.
 
@@ -94,7 +122,7 @@ The repository must not contain:
 - real voice models
 - voice samples
 - generated audio
-- copyrighted character presets
+- protected media assets
 - celebrity voice presets
 - API keys
 - secrets

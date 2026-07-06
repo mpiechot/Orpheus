@@ -5,7 +5,8 @@ public sealed record Persona(
     string DisplayName,
     string Description,
     PersonaSpeechProfile Speech,
-    PersonaVoiceProfile Voice);
+    PersonaVoiceProfile Voice,
+    string? PreviewText = null);
 
 public sealed record PersonaSpeechProfile(IReadOnlyList<string> Style);
 

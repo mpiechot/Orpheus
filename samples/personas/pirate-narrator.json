@@ -2,6 +2,7 @@
   "id": "pirate-narrator",
   "displayName": "Pirate Narrator",
   "description": "A playful pirate-style narrator for non-serious speech output.",
+  "previewText": "The next turn awaits, and the route is ours to follow.",
   "speech": {
     "style": [
       "Use playful nautical phrasing.",

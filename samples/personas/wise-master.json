@@ -2,6 +2,7 @@
   "id": "wise-master",
   "displayName": "Wise Master",
   "description": "A wise, ancient mentor archetype inspired by the iconic speech style of characters such as Yoda. This persona captures the overall feeling of a calm, thoughtful teacher without attempting to reproduce any specific copyrighted character or voice.",
+  "previewText": "The road ahead bends, but steady attention will guide us.",
 
   "speech": {
     "style": [

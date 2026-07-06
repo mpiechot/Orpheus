@@ -2,6 +2,7 @@
   "id": "portal-announcer",
   "displayName": "Portal Announcer",
   "description": "A dry, clinical test-facility announcer inspired by the tone of Portal and Aperture Science. This text-only persona describes a detached experimental facility voice without including protected dialogue, audio, or game assets.",
+  "previewText": "Please continue to the marked route segment for routine evaluation.",
   "speech": {
     "style": [
       "Use sterile, procedural phrasing.",

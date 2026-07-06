@@ -39,7 +39,7 @@ Rename the current Infrastructure project to Adapters so concrete implementation
 
 ## Slice 2: Add Preview Text To Persona End-To-End
 
-**Blocked by**: Slice 1.
+**Status**: Complete.
 
 **User stories covered**: Voice preview setup, text-only committed personas.
 
@@ -49,15 +49,15 @@ Add optional `previewText` to the Persona domain model and persona JSON shape so
 
 ### Acceptance criteria
 
-- [ ] Core `Persona` supports optional `previewText` without breaking existing callers.
-- [ ] Sample persona JSON files may include `previewText`.
-- [ ] In-memory sample persona definitions include representative original preview text where useful.
-- [ ] Tests cover creating a persona with and without `previewText`.
-- [ ] Committed preview text is original and does not quote protected dialogue, lyrics, scripts, or extracted game text.
+- [x] Core `Persona` supports optional `previewText` without breaking existing callers.
+- [x] Sample persona JSON files may include `previewText`.
+- [x] In-memory sample persona definitions include representative original preview text where useful.
+- [x] Tests cover creating a persona with and without `previewText`.
+- [x] Committed preview text is original and does not quote protected dialogue, lyrics, scripts, or extracted game text.
 
 ## Slice 3: Load Local Persona Overrides From `.orpheus/personas`
 
-**Blocked by**: Slice 2.
+**Status**: Complete.
 
 **User stories covered**: Private local persona overrides.
 
@@ -67,16 +67,16 @@ Add a file-based persona repository that loads committed personas and then overl
 
 ### Acceptance criteria
 
-- [ ] `samples/personas` can be loaded from JSON.
-- [ ] `.orpheus/personas` is loaded when present and ignored when absent.
-- [ ] A local persona with the same `id` overrides the committed sample at runtime.
-- [ ] Diagnostics can report which source supplied the active persona.
-- [ ] API and CLI `speak` use the resolved active persona.
-- [ ] Tests cover missing local folder, local-only persona, and local override behavior.
+- [x] `samples/personas` can be loaded from JSON.
+- [x] `.orpheus/personas` is loaded when present and ignored when absent.
+- [x] A local persona with the same `id` overrides the committed sample at runtime.
+- [x] Diagnostics can report which source supplied the active persona.
+- [x] API and CLI `speak` use the resolved active persona.
+- [x] Tests cover missing local folder, local-only persona, and local override behavior.
 
 ## Slice 4: Enforce Source-Aware Persona Validation
 
-**Blocked by**: Slice 3.
+**Status**: Complete.
 
 **User stories covered**: Repository safety boundary, private local assets.
 
@@ -86,17 +86,17 @@ Validate committed and local persona sources differently. Committed personas rem
 
 ### Acceptance criteria
 
-- [ ] Committed persona files reject `voice.assets`, local paths, provider secrets, and runtime asset references.
-- [ ] Local persona files may include `voice.assets`.
-- [ ] Supported common asset fields include `speakerSample`, `referenceAudio`, `modelPath`, and `speakerEmbedding`.
-- [ ] Provider-specific values are accepted only under `providerSettings`.
-- [ ] Relative asset paths resolve relative to the local persona file.
-- [ ] Asset existence is not required at application startup.
-- [ ] Tests cover accepted local assets, rejected committed assets, and relative path resolution.
+- [x] Committed persona files reject `voice.assets`, local paths, provider secrets, and runtime asset references.
+- [x] Local persona files may include `voice.assets`.
+- [x] Supported common asset fields include `speakerSample`, `referenceAudio`, `modelPath`, and `speakerEmbedding`.
+- [x] Provider-specific values are accepted only under `providerSettings`.
+- [x] Relative asset paths resolve relative to the local persona file.
+- [x] Asset existence is not required at application startup.
+- [x] Tests cover accepted local assets, rejected committed assets, and relative path resolution.
 
 ## Slice 5: Add Persona Runtime Metadata Resolution
 
-**Blocked by**: Slice 4.
+**Status**: Complete.
 
 **User stories covered**: Local assets without Core file/path dependencies.
 
@@ -106,15 +106,15 @@ Keep local `voice.assets` and source data available to adapters without adding t
 
 ### Acceptance criteria
 
-- [ ] Persona loading reads each persona file once and emits the Core `Persona` plus adapter-layer runtime metadata.
-- [ ] Core `Persona` does not include asset paths or provider-specific settings.
-- [ ] A provider adapter can resolve runtime metadata by persona id and/or voice id.
-- [ ] Tests prove `ITextToSpeechProvider` remains unchanged.
-- [ ] Missing runtime metadata for a real provider produces a clear configuration error when required.
+- [x] Persona loading reads each persona file once and emits the Core `Persona` plus adapter-layer runtime metadata.
+- [x] Core `Persona` does not include asset paths or provider-specific settings.
+- [x] A provider adapter can resolve runtime metadata by persona id and/or voice id.
+- [x] Tests prove `ITextToSpeechProvider` remains unchanged.
+- [x] Missing runtime metadata for a real provider produces a clear configuration error when required.
 
 ## Slice 6: Store Last Original Text For Regeneration Preview
 
-**Blocked by**: Slice 3.
+**Status**: Complete.
 
 **User stories covered**: Reroll preview with the text that triggered dissatisfaction.
 
@@ -124,12 +124,12 @@ Persist only the last original synthesis text per persona in ignored local runti
 
 ### Acceptance criteria
 
-- [ ] `speak` stores the last original input text per persona when enabled.
-- [ ] Transformed persona output is not stored for this feature.
-- [ ] Storage is under `.orpheus/state` or equivalent ignored runtime state.
-- [ ] A config switch can disable storing the last original text.
-- [ ] The implementation uses OS/user-bound protection where practical and documents fallback behavior.
-- [ ] Tests cover enabled, disabled, and overwritten-last-text behavior.
+- [x] `speak` stores the last original input text per persona when enabled.
+- [x] Transformed persona output is not stored for this feature.
+- [x] Storage is under `.orpheus/state` or equivalent ignored runtime state.
+- [x] A config switch can disable storing the last original text.
+- [x] The implementation uses OS/user-bound protection where practical and documents fallback behavior.
+- [x] Tests cover enabled, disabled, and overwritten-last-text behavior.
 
 ## Slice 7: Add Persistent Voice Identity Store With Stub Provider Support
 
@@ -245,4 +245,4 @@ Choose and add an explicit software license before public release or external di
 
 ## Recommended Start Order
 
-Slice 1 is complete. Continue with Slice 2, then Slice 3. Slice 12 can run in parallel. Do not start real provider integration before Slice 10 and Slice 11 are complete.
+Slices 1 through 6 are complete. Continue with Slice 7, then Slice 8 and Slice 9. Slice 12 can run in parallel. Do not start real provider integration before Slice 10 and Slice 11 are complete.

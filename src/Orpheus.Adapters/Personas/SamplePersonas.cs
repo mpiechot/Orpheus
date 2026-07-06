@@ -26,7 +26,8 @@ public static class SamplePersonas
                     "Raspy.",
                     "Soft-spoken.",
                     "Slow and deliberate."
-                ])),
+                ]),
+            "The road ahead bends, but steady attention will guide us."),
 
         new Persona(
             "sarcastic-ai",
@@ -47,7 +48,8 @@ public static class SamplePersonas
                     "Synthetic.",
                     "Calm.",
                     "Slightly dry."
-                ])),
+                ]),
+            "Proceeding with the obvious plan, which is still the correct one."),
 
         new Persona(
             "pirate-narrator",
@@ -68,7 +70,8 @@ public static class SamplePersonas
                     "Rough.",
                     "Confident.",
                     "Theatrical."
-                ])),
+                ]),
+            "The next turn awaits, and the route is ours to follow."),
 
         new Persona(
             "portal-announcer",
@@ -90,6 +93,7 @@ public static class SamplePersonas
                     "Clinical.",
                     "Evenly paced.",
                     "Emotionally detached."
-                ]))
+                ]),
+            "Please continue to the marked route segment for routine evaluation.")
     ];
 }

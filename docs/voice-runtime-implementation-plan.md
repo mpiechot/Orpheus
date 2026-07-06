@@ -12,6 +12,8 @@ The project boundary is now named `Orpheus.Adapters`, with project file, namespa
 
 ## 2. Extend Persona Format
 
+Status: Complete.
+
 Goal: support preview and local override behavior without adding runtime assets to Core.
 
 - Add optional `previewText` to Core `Persona`.
@@ -22,6 +24,8 @@ Goal: support preview and local override behavior without adding runtime assets 
 - Add source-aware validation.
 
 ## 3. Parse Local Voice Assets Outside Core
+
+Status: Complete.
 
 Goal: keep local paths and provider-specific data out of Core.
 
@@ -63,6 +67,8 @@ Goal: make reroll workflows usable.
 `speak` creates the first active voice automatically when needed. `voice regenerate` creates a candidate and preview audio. `voice accept` activates the candidate and cleans up old candidates, but does not automatically regenerate the last spoken audio.
 
 ## 7. Add Last Original Text State
+
+Status: Complete.
 
 Goal: preview rerolls with the input that triggered the reroll.
 

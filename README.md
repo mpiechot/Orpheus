@@ -45,6 +45,10 @@ V1 currently includes:
 - Orpheus.Cli
 - xUnit tests
 - sample neutral personas
+- file-based persona loading from `samples/personas`
+- local persona overrides from `.orpheus/personas`
+- optional persona `previewText`
+- local last-original-text state under `.orpheus/state`
 - stub persona transformer
 - stub TTS provider
 - POST /speak endpoint
@@ -136,6 +140,24 @@ Default local development path:
 ```
 
 Local personas with the same `id` as a committed sample persona override the committed sample at runtime.
+
+Local-only voice assets may be placed under `voice.assets` in private persona files. Supported common fields are `speakerSample`, `referenceAudio`, `modelPath`, `speakerEmbedding`, and provider-specific values under `providerSettings`. Relative asset paths resolve relative to the local persona file. Asset existence is checked later by provider adapters, not during persona loading.
+
+## Local State
+
+`speak` stores the last original input text per persona under `.orpheus/state` by default so later voice regeneration can preview the text that triggered a reroll. The transformed persona output is not stored for this feature.
+
+The API can disable this behavior with:
+
+```json
+{
+  "Orpheus": {
+    "State": {
+      "StoreLastOriginalText": false
+    }
+  }
+}
+```
 
 ## Runtime Voice Data
 

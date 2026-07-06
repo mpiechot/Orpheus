@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Orpheus.Api;
 
 namespace Orpheus.Api.Tests;
@@ -11,7 +12,18 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
 
     public SpeechEndpointTests(WebApplicationFactory<Program> factory)
     {
-        _client = factory.CreateClient();
+        _client = factory
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration((_, configuration) =>
+                {
+                    configuration.AddInMemoryCollection(new Dictionary<string, string?>
+                    {
+                        ["Orpheus:State:StoreLastOriginalText"] = "false"
+                    });
+                });
+            })
+            .CreateClient();
     }
 
     [Fact]

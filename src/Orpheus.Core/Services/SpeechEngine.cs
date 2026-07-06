@@ -9,15 +9,18 @@ public sealed class SpeechEngine
     private readonly IPersonaRepository _personaRepository;
     private readonly IPersonaTransformer _personaTransformer;
     private readonly ITextToSpeechProvider _textToSpeechProvider;
+    private readonly ILastSpeechTextStore? _lastSpeechTextStore;
 
     public SpeechEngine(
         IPersonaRepository personaRepository,
         IPersonaTransformer personaTransformer,
-        ITextToSpeechProvider textToSpeechProvider)
+        ITextToSpeechProvider textToSpeechProvider,
+        ILastSpeechTextStore? lastSpeechTextStore = null)
     {
         _personaRepository = personaRepository;
         _personaTransformer = personaTransformer;
         _textToSpeechProvider = textToSpeechProvider;
+        _lastSpeechTextStore = lastSpeechTextStore;
     }
 
     public async Task<SpeechResult> SpeakAsync(
@@ -37,6 +40,11 @@ public sealed class SpeechEngine
         var audio = await _textToSpeechProvider.SynthesizeAsync(
             new SpeechSynthesisRequest(persona, transformed.Text),
             cancellationToken);
+
+        if (_lastSpeechTextStore is not null)
+        {
+            await _lastSpeechTextStore.StoreAsync(persona.Id, text, cancellationToken);
+        }
 
         return new SpeechResult(persona.Id, transformed.Text, audio);
     }

@@ -1,5 +1,6 @@
 using Orpheus.Adapters.Personas;
 using Orpheus.Adapters.Speech;
+using Orpheus.Adapters.State;
 using Orpheus.Adapters.Transformation;
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Exceptions;
@@ -16,10 +17,13 @@ if (args.Length < 2)
 var personaId = args[0];
 var text = string.Join(' ', args.Skip(1));
 
-IPersonaRepository personaRepository = InMemoryPersonaRepository.CreateWithSamplePersonas();
+var filePersonaRepository = PersonaRepositoryFactory.CreateDefault();
+IPersonaRepository personaRepository = filePersonaRepository;
 IPersonaTransformer personaTransformer = new StubPersonaTransformer();
 ITextToSpeechProvider textToSpeechProvider = new StubTextToSpeechProvider();
-var speechEngine = new SpeechEngine(personaRepository, personaTransformer, textToSpeechProvider);
+ILastSpeechTextStore lastSpeechTextStore = new FileLastSpeechTextStore(
+    new FileLastSpeechTextStoreOptions(PersonaRepositoryFactory.ResolveRuntimeDirectory("state")));
+var speechEngine = new SpeechEngine(personaRepository, personaTransformer, textToSpeechProvider, lastSpeechTextStore);
 
 try
 {

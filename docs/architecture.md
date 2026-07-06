@@ -46,19 +46,18 @@ Initial responsibilities:
 
 - stub persona transformer
 - stub TTS provider
-- in-memory persona repository
-- built-in sample persona registration
+- in-memory persona repository for tests and simple development
+- file-based persona repository
+- committed sample persona loading
+- local persona override loading
+- persona runtime metadata resolution
+- last original text state store
 - audio cache later
 
 Future responsibilities:
 
-- persona file repository
-- local/private persona loading
-- local persona source validation
-- persona runtime metadata store
 - voice asset resolver
 - voice identity store
-- local state store
 - audio cache implementation
 - provider process adapter
 - local LLM provider
@@ -117,11 +116,11 @@ Initial interfaces:
 - IPersonaTransformer
 - ITextToSpeechProvider
 - IAudioCache
+- ILastSpeechTextStore
 
 Future interfaces may include:
 
 - IVoiceIdentityStore
-- ILastSpeechTextStore
 - IPersonaRuntimeMetadataStore
 
 Core owns the abstractions and domain language. The adapter layer owns file paths, provider process execution, local runtime state, and concrete persistence.
@@ -137,6 +136,8 @@ Local personas override committed personas with the same `id`. The active source
 Committed persona sources must reject runtime asset references, local paths, provider secrets, samples, models, generated media, and other protected assets. Local persona sources may include optional `voice.assets` data for the user's own runtime environment.
 
 `voice.assets` is not part of the Core `Persona` model. The persona loader reads it once and stores it as adapter-layer runtime metadata for the selected provider.
+
+Supported local `voice.assets` fields are `speakerSample`, `referenceAudio`, `modelPath`, `speakerEmbedding`, and `providerSettings`. Relative asset paths resolve relative to the local persona file. Asset existence is intentionally deferred until synthesis time because local provider setup may be incomplete during application startup.
 
 ## Voice Runtime
 
@@ -164,7 +165,9 @@ Voice regeneration needs preview text. The selection order is:
 4. global preview text from app configuration
 5. clear error
 
-Only the last original synthesis text should be stored. Transformed persona output is not needed for regeneration preview. The state is local runtime data, enabled by default, configurable, and protected with OS/user-bound storage where practical.
+Only the last original synthesis text is stored. Transformed persona output is not needed for regeneration preview. The state is local runtime data under `.orpheus/state`, enabled by default, and configurable through `Orpheus:State:StoreLastOriginalText`.
+
+On Unix-like systems the file store attempts user-only file permissions. On Windows it relies on the existing user/workspace ACLs and does not broaden access.
 
 ## Safety Boundary
 

@@ -69,6 +69,8 @@ Deliverables:
 
 Goal: Load personas from local files.
 
+Status: Complete for committed samples and `.orpheus/personas` overrides.
+
 Deliverables:
 
 - JSON persona format
@@ -87,6 +89,8 @@ Deliverables:
 
 Goal: Keep local voice assets outside Core while still making them available to provider adapters.
 
+Status: Complete for persona loading and metadata resolution. Synth-time provider asset validation remains part of provider adapter work.
+
 Deliverables:
 
 - local-only `voice.assets` parsing
@@ -100,6 +104,8 @@ Deliverables:
 ## M7 - Voice Identity Lifecycle
 
 Goal: Generate or resolve a stable voice identity once per persona and reuse it.
+
+Status: In progress. Last-original-text state is complete; voice identity storage and lifecycle commands remain.
 
 Deliverables:
 

@@ -23,6 +23,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Orpheus.Core\Orpheus.Core.csproj" />
     <ProjectReference Include="..\..\src\Orpheus.Adapters\Orpheus.Adapters.csproj" />
+    <ProjectReference Include="..\..\src\Orpheus.Cli\Orpheus.Cli.csproj" />
+    <ProjectReference Include="..\Orpheus.ProcessHelper\Orpheus.ProcessHelper.csproj" />
   </ItemGroup>
 
 </Project>

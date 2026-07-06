@@ -49,10 +49,12 @@ V1 currently includes:
 - local persona overrides from `.orpheus/personas`
 - optional persona `previewText`
 - local last-original-text state under `.orpheus/state`
+- local voice identity lifecycle under `.orpheus/voices`
 - stub persona transformer
 - deterministic WAV audio provider writing files under `.orpheus/audio`
+- process-based provider adapter harness for local providers
 - POST /speak endpoint
-- CLI command for generating transformed text and an audio result
+- CLI commands for generating transformed text, audio results, and voice lifecycle management
 
 No real AI provider or real voice provider is required for V1, but the local pipeline now writes a deterministic WAV file so clients can build against real audio-file output from the beginning.
 
@@ -89,6 +91,15 @@ Output:
 ```text
 In 500 meters, turn right, you should.
 file:///C:/path/to/Orpheus/.orpheus/audio/wise-master-<hash>.wav
+```
+
+Voice lifecycle commands:
+
+```powershell
+dotnet run --project src/Orpheus.Cli/Orpheus.Cli.csproj -- voice status wise-master
+dotnet run --project src/Orpheus.Cli/Orpheus.Cli.csproj -- voice regenerate wise-master --text "In 500 meters, turn right."
+dotnet run --project src/Orpheus.Cli/Orpheus.Cli.csproj -- voice accept wise-master <candidate-id>
+dotnet run --project src/Orpheus.Cli/Orpheus.Cli.csproj -- voice reject wise-master <candidate-id>
 ```
 
 ## Example API
@@ -168,6 +179,39 @@ Generated voice profiles, embeddings, reference audio, provider metadata, last-i
 The default development provider is `deterministic-wav`. It writes a valid local WAV file, but it is not real spoken TTS. On Windows, `windows-sapi` can be selected experimentally through `Orpheus:Speech:Provider` when the local SAPI installation can synthesize from the current process.
 
 Voice regeneration should create a candidate voice identity first. Accepting the candidate makes it active and may clean up rejected or stale candidates. Audio cache keys must include the active voice identity version or fingerprint so old audio is not reused for a different active voice.
+
+## Process Provider
+
+The generic `process` provider can invoke a configured local command and validate the generated output file. It is intended for local providers such as Chatterbox wrappers without embedding Python, GPU dependencies, or model files in Orpheus.
+
+Example configuration shape:
+
+```json
+{
+  "Orpheus": {
+    "Speech": {
+      "Provider": "process",
+      "Process": {
+        "ProviderName": "chatterbox-local",
+        "Command": "python",
+        "Arguments": [
+          "synthesize_chatterbox.py",
+          "--text-file",
+          "{textFile}",
+          "--output",
+          "{outputFile}",
+          "--reference-audio",
+          "{referenceAudio}"
+        ],
+        "RequireReferenceAudio": true,
+        "TimeoutSeconds": 120
+      }
+    }
+  }
+}
+```
+
+Arguments are passed structurally and may use placeholders such as `{textFile}`, `{outputFile}`, `{referenceAudio}`, `{speakerSample}`, `{modelPath}`, `{speakerEmbedding}`, `{voiceIdentityKey}`, and `{setting:name}`.
 
 ## Repository Safety Rules
 

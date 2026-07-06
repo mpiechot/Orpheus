@@ -10,11 +10,14 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly HttpClient _client;
     private readonly string _audioOutputDirectory;
+    private readonly string _voiceDirectory;
 
     public SpeechEndpointTests(WebApplicationFactory<Program> factory)
     {
         _audioOutputDirectory = Path.Combine(Path.GetTempPath(), "orpheus-api-tests", Guid.NewGuid().ToString("N"));
+        _voiceDirectory = Path.Combine(Path.GetTempPath(), "orpheus-api-tests", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(_audioOutputDirectory);
+        Directory.CreateDirectory(_voiceDirectory);
 
         _client = factory
             .WithWebHostBuilder(builder =>
@@ -25,6 +28,7 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
                     {
                         ["Orpheus:Speech:Provider"] = "deterministic-wav",
                         ["Orpheus:Speech:OutputDirectory"] = _audioOutputDirectory,
+                        ["Orpheus:Voice:Directory"] = _voiceDirectory,
                         ["Orpheus:State:StoreLastOriginalText"] = "false"
                     });
                 });
@@ -80,6 +84,11 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
         if (Directory.Exists(_audioOutputDirectory))
         {
             Directory.Delete(_audioOutputDirectory, recursive: true);
+        }
+
+        if (Directory.Exists(_voiceDirectory))
+        {
+            Directory.Delete(_voiceDirectory, recursive: true);
         }
     }
 }

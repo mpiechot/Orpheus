@@ -105,7 +105,7 @@ Deliverables:
 
 Goal: Generate or resolve a stable voice identity once per persona and reuse it.
 
-Status: In progress. Last-original-text state is complete; voice identity storage and lifecycle commands remain.
+Status: Complete for local file-backed voice identities and CLI lifecycle commands.
 
 Deliverables:
 
@@ -122,7 +122,7 @@ Deliverables:
 
 Goal: Avoid regenerating identical output while respecting active voice identity.
 
-Status: Partial. Deterministic WAV output files are reused for equivalent provider/persona/text/voice-style requests. Active voice identity isolation remains blocked by M7.
+Status: Complete for deterministic/file-based providers. Deterministic WAV output files are reused for equivalent provider/persona/text/active-voice requests and isolated when the active voice identity changes.
 
 Deliverables:
 
@@ -136,6 +136,8 @@ Deliverables:
 ## M9 - Provider Process Adapter
 
 Goal: Prepare real providers without coupling Core to them.
+
+Status: Complete for the generic process adapter harness. Chatterbox-specific wrapper/setup remains a provider integration follow-up.
 
 Deliverables:
 

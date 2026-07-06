@@ -133,7 +133,7 @@ Persist only the last original synthesis text per persona in ignored local runti
 
 ## Slice 7: Add Persistent Voice Identity Store With Stub Provider Support
 
-**Blocked by**: Slice 5.
+**Status**: Complete.
 
 **User stories covered**: Stable persona voice identity, regenerate without real provider dependency.
 
@@ -143,16 +143,16 @@ Introduce the voice identity lifecycle using deterministic local storage and wir
 
 ### Acceptance criteria
 
-- [ ] Voice identities are stored under `.orpheus/voices` or equivalent ignored runtime storage.
-- [ ] Supported states are `active`, `candidate`, and `rejected`.
-- [ ] First `speak` can create or resolve an active voice identity.
-- [ ] Voice identity fingerprints include persona id, provider, voice id, voice style, relevant provider settings, and local asset metadata.
-- [ ] Stale active voices produce a warning without silent replacement.
-- [ ] Tests cover first activation, candidate creation, accept, reject, cleanup, and stale detection.
+- [x] Voice identities are stored under `.orpheus/voices` or equivalent ignored runtime storage.
+- [x] Supported states are `active`, `candidate`, and `rejected`.
+- [x] First `speak` can create or resolve an active voice identity.
+- [x] Voice identity fingerprints include persona id, provider, voice id, voice style, relevant provider settings, and local asset metadata.
+- [x] Stale active voices produce a warning without silent replacement.
+- [x] Tests cover first activation, candidate creation, accept, reject, cleanup, and stale detection.
 
 ## Slice 8: Add Voice Lifecycle CLI Commands
 
-**Blocked by**: Slice 6, Slice 7.
+**Status**: Complete.
 
 **User stories covered**: Preview and reroll generated voices.
 
@@ -162,20 +162,18 @@ Expose the minimal voice lifecycle through CLI commands.
 
 ### Acceptance criteria
 
-- [ ] `voice status <personaId>` shows active/candidate/stale state and persona source.
-- [ ] `voice regenerate <personaId> [--text "..."]` creates a candidate and preview audio.
-- [ ] Preview text selection order is explicit text, last original text, persona `previewText`, global preview text, then clear error.
-- [ ] CLI output shows the preview text source.
-- [ ] `voice accept <personaId> <candidateId>` activates the candidate and cleans up old candidates.
-- [ ] `voice reject <personaId> <candidateId>` rejects a candidate.
-- [ ] Accepting a voice does not automatically regenerate the last spoken audio.
-- [ ] CLI integration tests cover the happy path and missing-preview-text error.
+- [x] `voice status <personaId>` shows active/candidate/stale state and persona source.
+- [x] `voice regenerate <personaId> [--text "..."]` creates a candidate and preview audio.
+- [x] Preview text selection order is explicit text, last original text, persona `previewText`, global preview text, then clear error.
+- [x] CLI output shows the preview text source.
+- [x] `voice accept <personaId> <candidateId>` activates the candidate and cleans up old candidates.
+- [x] `voice reject <personaId> <candidateId>` rejects a candidate.
+- [x] Accepting a voice does not automatically regenerate the last spoken audio.
+- [x] CLI integration tests cover the happy path and missing-preview-text error.
 
 ## Slice 9: Isolate Audio Cache By Active Voice Identity
 
-**Blocked by**: Slice 7.
-
-**Partial progress**: The deterministic WAV provider already reuses equivalent generated files and keys them by provider, persona id, requested persona voice, voice style, and transformed text. Full active-voice identity isolation is still blocked by Slice 7.
+**Status**: Complete for deterministic/file-based providers.
 
 **User stories covered**: Correct audio after voice changes.
 
@@ -185,14 +183,14 @@ Ensure audio cache entries are keyed by the active voice identity version or fin
 
 ### Acceptance criteria
 
-- [ ] Cache key includes persona id, text, provider, voice id, output format, and active voice identity version or fingerprint.
-- [ ] The same text with a new accepted voice produces a different cache key.
-- [ ] Existing cache cleanup remains optional and is not required for correctness.
-- [ ] Tests cover cache hit for same voice and cache miss after voice change.
+- [x] Cache key includes persona id, text, provider, voice id, output format, and active voice identity version or fingerprint.
+- [x] The same text with a new accepted voice produces a different cache key.
+- [x] Existing cache cleanup remains optional and is not required for correctness.
+- [x] Tests cover cache hit for same voice and cache miss after voice change.
 
 ## Slice 10: Add Process-Based Provider Adapter Harness
 
-**Blocked by**: Slice 5, Slice 7, Slice 9.
+**Status**: Complete.
 
 **User stories covered**: Real provider integration through a safe process boundary.
 
@@ -202,12 +200,12 @@ Add a provider process adapter that can invoke a configured local command, pass 
 
 ### Acceptance criteria
 
-- [ ] Provider command, timeout, working directory, and output format are configured globally.
-- [ ] Process arguments are built structurally, not by shell string concatenation.
-- [ ] Required asset paths are checked at synthesis time.
-- [ ] Non-zero exit codes, timeout, missing output, invalid output path, and unsupported assets produce clear errors.
-- [ ] Tests use a deterministic local helper process and require no network.
-- [ ] Core remains free of provider process and filesystem dependencies.
+- [x] Provider command, timeout, working directory, and output format are configured globally.
+- [x] Process arguments are built structurally, not by shell string concatenation.
+- [x] Required asset paths are checked at synthesis time.
+- [x] Non-zero exit codes, timeout, missing output, invalid output path, and unsupported assets produce clear errors.
+- [x] Tests use a deterministic local helper process and require no network.
+- [x] Core remains free of provider process and filesystem dependencies.
 
 ## Slice 11: Complete Primary Provider Evaluation
 
@@ -247,4 +245,4 @@ Choose and add an explicit software license before public release or external di
 
 ## Recommended Start Order
 
-Slices 1 through 6 and Slice 11 are complete. Continue with Slice 7, then Slice 8 and Slice 9. Slice 12 can run in parallel. Do not start real provider integration before Slice 10 is complete.
+Slices 1 through 11 are complete. Slice 12 remains an owner/license decision before public release.

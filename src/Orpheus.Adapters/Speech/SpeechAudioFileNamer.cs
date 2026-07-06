@@ -15,6 +15,7 @@ internal static class SpeechAudioFileNamer
             request.Persona.Voice.Provider,
             request.Persona.Voice.VoiceId,
             string.Join('|', request.Persona.Voice.Style),
+            request.VoiceIdentityKey ?? string.Empty,
             request.Text);
 
         var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(hashInput))).ToLowerInvariant();

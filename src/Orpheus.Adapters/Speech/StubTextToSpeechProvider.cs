@@ -11,8 +11,11 @@ public sealed class StubTextToSpeechProvider : ITextToSpeechProvider
     {
         var voiceId = request.Persona.Voice.VoiceId;
         var provider = request.Persona.Voice.Provider;
+        var identitySegment = string.IsNullOrWhiteSpace(request.VoiceIdentityKey)
+            ? string.Empty
+            : $"/{Uri.EscapeDataString(request.VoiceIdentityKey)}";
         var audio = new AudioResult(
-            $"stub://{Uri.EscapeDataString(voiceId)}/speech",
+            $"stub://{Uri.EscapeDataString(voiceId)}/speech{identitySegment}",
             provider,
             voiceId,
             "audio/stub");

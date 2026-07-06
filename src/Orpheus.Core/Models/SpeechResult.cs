@@ -4,7 +4,10 @@ public sealed record SpeechResult(string PersonaId, string Text, AudioResult Aud
 
 public sealed record PersonaTextResult(string PersonaId, string Text);
 
-public sealed record SpeechSynthesisRequest(Persona Persona, string Text);
+public sealed record SpeechSynthesisRequest(
+    Persona Persona,
+    string Text,
+    string? VoiceIdentityKey = null);
 
 public sealed record AudioResult(
     string Uri,

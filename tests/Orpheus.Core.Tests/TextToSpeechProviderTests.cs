@@ -1,4 +1,5 @@
 using Orpheus.Adapters.Speech;
+using Orpheus.Adapters.Voice;
 using Orpheus.Core.Models;
 
 namespace Orpheus.Core.Tests;
@@ -47,6 +48,55 @@ public sealed class TextToSpeechProviderTests
 
         Assert.Equal(first.Uri, second.Uri);
         Assert.Single(Directory.EnumerateFiles(workspace.Root, "*.wav"));
+    }
+
+    [Fact]
+    public async Task Deterministic_wav_provider_uses_voice_identity_key_in_cache_path()
+    {
+        using var workspace = TestWorkspace.Create();
+        var provider = new DeterministicWavTextToSpeechProvider(
+            new DeterministicWavTextToSpeechProviderOptions(workspace.Root));
+        var persona = new Persona(
+            "calm-guide",
+            "Calm Guide",
+            "A calm neutral guide.",
+            new PersonaSpeechProfile(["Use plain words."]),
+            new PersonaVoiceProfile("stub", "calm-guide-placeholder", ["Calm."]));
+
+        var first = await provider.SynthesizeAsync(new SpeechSynthesisRequest(
+            persona,
+            "Continue straight.",
+            "voice-fingerprint-a"));
+        var second = await provider.SynthesizeAsync(new SpeechSynthesisRequest(
+            persona,
+            "Continue straight.",
+            "voice-fingerprint-b"));
+
+        Assert.NotEqual(first.Uri, second.Uri);
+        Assert.Equal(2, Directory.EnumerateFiles(workspace.Root, "*.wav").Count());
+    }
+
+    [Fact]
+    public async Task Voice_identity_provider_creates_active_identity_before_synthesis()
+    {
+        using var workspace = TestWorkspace.Create();
+        var voiceStore = new FileVoiceIdentityStore(new FileVoiceIdentityStoreOptions(workspace.Root));
+        var provider = new VoiceIdentityTextToSpeechProvider(
+            new StubTextToSpeechProvider(),
+            voiceStore,
+            "stub");
+        var persona = new Persona(
+            "calm-guide",
+            "Calm Guide",
+            "A calm neutral guide.",
+            new PersonaSpeechProfile(["Use plain words."]),
+            new PersonaVoiceProfile("stub", "calm-guide-placeholder", ["Calm."]));
+
+        var audio = await provider.SynthesizeAsync(new SpeechSynthesisRequest(persona, "Continue straight."));
+        var status = await voiceStore.GetStatusAsync(persona, "stub");
+
+        Assert.NotNull(status.Active);
+        Assert.Contains(status.Active.Fingerprint, audio.Uri, StringComparison.Ordinal);
     }
 
     private sealed class TestWorkspace : IDisposable

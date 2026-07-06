@@ -268,8 +268,6 @@ Decision: reject for V1.
 
 ## Next Steps
 
-1. Finish the voice identity store and cache isolation before enabling `chatterbox-local`.
-2. Add the generic process adapter harness with deterministic tests.
-3. Add a local Chatterbox wrapper script and integration docs.
-4. Validate Chatterbox setup on the target local environment before declaring the provider production-ready.
-5. Keep `deterministic-wav` as the default provider until a user explicitly configures `chatterbox-local`.
+1. Add a local Chatterbox wrapper script and setup documentation for the generic process adapter.
+2. Validate Chatterbox setup on the target local environment before declaring the provider production-ready.
+3. Keep `deterministic-wav` as the default provider until a user explicitly configures `process` with `ProviderName` set to `chatterbox-local`.

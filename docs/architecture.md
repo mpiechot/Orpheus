@@ -54,14 +54,14 @@ Initial responsibilities:
 - local persona override loading
 - persona runtime metadata resolution
 - last original text state store
-- audio cache later
+- voice identity store
+- provider process adapter
+- audio cache key isolation for active voice identities
 
 Future responsibilities:
 
 - voice asset resolver
-- voice identity store
-- audio cache implementation
-- provider process adapter
+- audio cache implementation beyond deterministic file naming
 - local LLM provider
 - local TTS provider
 - remote TTS provider
@@ -92,12 +92,12 @@ Initial command:
 
 - speak a text with a selected persona and print transformed text plus audio URI
 
-Future commands:
+Voice lifecycle commands:
 
-- voice status
-- voice regenerate
-- voice accept
-- voice reject
+- `voice status <personaId>`
+- `voice regenerate <personaId> [--text "..."]`
+- `voice accept <personaId> <candidateId>`
+- `voice reject <personaId> <candidateId>`
 
 ## Main Flow
 
@@ -105,9 +105,9 @@ Future commands:
 2. API or CLI creates a speech request.
 3. Persona repository resolves the persona.
 4. Persona transformer creates persona-specific text.
-5. The TTS adapter resolves the active local voice identity for the persona.
+5. The TTS adapter resolves or creates the active local voice identity for the persona.
 6. The TTS adapter creates or stubs audio output. The default development provider writes a deterministic WAV file under `.orpheus/audio`.
-7. Audio cache stores or reuses generated audio.
+7. File-based providers include the active voice identity fingerprint in the generated audio path so changed voices do not reuse old audio.
 8. Response returns transformed text and optional audio location.
 
 ## Core Interfaces
@@ -122,7 +122,6 @@ Initial interfaces:
 
 Future interfaces may include:
 
-- IVoiceIdentityStore
 - IPersonaRuntimeMetadataStore
 
 Core owns the abstractions and domain language. The adapter layer owns file paths, provider process execution, local runtime state, and concrete persistence.
@@ -156,6 +155,16 @@ The first `speak` call may generate and activate a voice automatically. Regenera
 Each voice identity should include a fingerprint from the persona id, provider, voice id, voice style, relevant provider settings, and local asset metadata. For V1, asset metadata means normalized path, file size, and last modified time rather than full file hashes.
 
 If the current persona no longer matches the stored voice fingerprint, the voice is stale. V1 may continue using it, but must warn clearly.
+
+The file-backed voice identity store lives under `.orpheus/voices` by default. It stores metadata and fingerprints, not copied voice samples, models, generated audio, or provider secrets.
+
+## Provider Process Adapter
+
+The generic process adapter invokes a configured local command with structured argument templates such as `{textFile}`, `{outputFile}`, `{referenceAudio}`, `{speakerSample}`, `{modelPath}`, `{speakerEmbedding}`, and `{setting:name}`. It does not build shell command strings.
+
+At synthesis time, it validates required local voice assets, rejects configured assets the provider does not consume, writes transformed text to a local runtime input file, runs the command with a timeout, checks the exit code, and validates the generated output file.
+
+The process adapter is provider-agnostic. A Chatterbox integration should supply a local wrapper script and configure the process adapter rather than adding Chatterbox runtime dependencies to Orpheus.
 
 ## Preview and Local State
 

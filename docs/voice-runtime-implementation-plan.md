@@ -37,6 +37,8 @@ Goal: keep local paths and provider-specific data out of Core.
 
 ## 4. Add Provider Process Adapter Contract
 
+Status: Complete.
+
 Goal: prepare a real local TTS provider without embedding provider runtimes.
 
 - Configure provider command, timeout, output format, and working directory globally.
@@ -47,6 +49,8 @@ Goal: prepare a real local TTS provider without embedding provider runtimes.
 
 ## 5. Add Persistent Voice Identity Store
 
+Status: Complete.
+
 Goal: generate or resolve a persona voice once and reuse it.
 
 - Store voice identities under ignored `.orpheus/voices`.
@@ -56,6 +60,8 @@ Goal: generate or resolve a persona voice once and reuse it.
 - Include active voice identity version or fingerprint in audio cache keys.
 
 ## 6. Add Voice CLI Commands
+
+Status: Complete.
 
 Goal: make reroll workflows usable.
 
@@ -79,6 +85,8 @@ Goal: preview rerolls with the input that triggered the reroll.
 - Never commit, log, or expose this state as repository data.
 
 ## 8. Add Audio Cache Isolation
+
+Status: Complete for deterministic/file-based providers.
 
 Goal: avoid reusing old audio for a changed voice.
 

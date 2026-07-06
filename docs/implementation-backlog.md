@@ -211,7 +211,7 @@ Add a provider process adapter that can invoke a configured local command, pass 
 
 ## Slice 11: Complete Primary Provider Evaluation
 
-**Blocked by**: Slice 10.
+**Status**: Complete.
 
 **User stories covered**: Choose one quality anchor for real V1 audio.
 
@@ -221,11 +221,11 @@ Evaluate candidate local persona-capable TTS providers against the documented cr
 
 ### Acceptance criteria
 
-- [ ] `docs/provider-evaluation.md` lists evaluated candidates.
-- [ ] Each candidate is evaluated against persona fit, local execution, WAV output, process-adapter compatibility, stable voice identity, local asset support, regeneration support, failure modes, timeout behavior, and setup complexity.
-- [ ] The recommendation names one V1 primary provider or explicitly blocks provider integration with reasons.
-- [ ] Rejected or deferred options include concrete reasons.
-- [ ] No provider assets, model files, samples, generated audio, or secrets are committed.
+- [x] `docs/provider-evaluation.md` lists evaluated candidates.
+- [x] Each candidate is evaluated against persona fit, local execution, WAV output, process-adapter compatibility, stable voice identity, local asset support, regeneration support, failure modes, timeout behavior, and setup complexity.
+- [x] The recommendation names one V1 primary provider or explicitly blocks provider integration with reasons.
+- [x] Rejected or deferred options include concrete reasons.
+- [x] No provider assets, model files, samples, generated audio, or secrets are committed.
 
 ## Slice 12: Choose Software License Before Public Release
 
@@ -247,4 +247,4 @@ Choose and add an explicit software license before public release or external di
 
 ## Recommended Start Order
 
-Slices 1 through 6 are complete. Continue with Slice 7, then Slice 8 and Slice 9. Slice 12 can run in parallel. Do not start real provider integration before Slice 10 and Slice 11 are complete.
+Slices 1 through 6 and Slice 11 are complete. Continue with Slice 7, then Slice 8 and Slice 9. Slice 12 can run in parallel. Do not start real provider integration before Slice 10 is complete.

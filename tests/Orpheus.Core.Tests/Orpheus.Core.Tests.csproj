@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Orpheus.Core\Orpheus.Core.csproj" />
-    <ProjectReference Include="..\..\src\Orpheus.Infrastructure\Orpheus.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Orpheus.Adapters\Orpheus.Adapters.csproj" />
   </ItemGroup>
 
 </Project>

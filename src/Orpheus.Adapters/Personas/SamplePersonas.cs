@@ -1,6 +1,6 @@
 using Orpheus.Core.Models;
 
-namespace Orpheus.Infrastructure.Personas;
+namespace Orpheus.Adapters.Personas;
 
 public static class SamplePersonas
 {

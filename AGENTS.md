@@ -31,8 +31,8 @@ The solution consists of four primary projects.
 Orpheus.Core
     Domain models and interfaces.
 
-Orpheus.Infrastructure
-    Implementations of providers and repositories.
+Orpheus.Adapters
+    Concrete adapters for providers, repositories, files, runtime state, and caches.
 
 Orpheus.Api
     HTTP interface.
@@ -50,7 +50,7 @@ The Core project defines the domain.
 
 Core must never depend on:
 
-- Infrastructure
+- Adapters
 - Api
 - Cli
 - filesystem
@@ -58,11 +58,11 @@ Core must never depend on:
 - external AI providers
 - concrete TTS providers
 
-Infrastructure depends on Core.
+Adapters depends on Core.
 
-API depends on Core and Infrastructure.
+API depends on Core and Adapters.
 
-CLI depends on Core and Infrastructure.
+CLI depends on Core and Adapters.
 
 Dependencies always point towards the Core.
 

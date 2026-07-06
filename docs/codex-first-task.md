@@ -19,7 +19,7 @@ The first version must not use:
 Create:
 
 - src/Orpheus.Core
-- src/Orpheus.Infrastructure
+- src/Orpheus.Adapters
 - src/Orpheus.Api
 - src/Orpheus.Cli
 - tests/Orpheus.Core.Tests
@@ -47,7 +47,7 @@ Create:
 - ITextToSpeechProvider
 - IAudioCache
 
-## Required Infrastructure
+## Required Adapters
 
 Implement deterministic stubs:
 

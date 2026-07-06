@@ -1,7 +1,7 @@
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Models;
 
-namespace Orpheus.Infrastructure.Transformation;
+namespace Orpheus.Adapters.Transformation;
 
 public sealed class StubPersonaTransformer : IPersonaTransformer
 {

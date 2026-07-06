@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpheus.Core", "src\Orpheus.Core\Orpheus.Core.csproj", "{5689D02E-205C-461F-ADC6-DC69058F6AB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpheus.Infrastructure", "src\Orpheus.Infrastructure\Orpheus.Infrastructure.csproj", "{52ED6517-E565-4091-93DF-FA7033841185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpheus.Adapters", "src\Orpheus.Adapters\Orpheus.Adapters.csproj", "{52ED6517-E565-4091-93DF-FA7033841185}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orpheus.Api", "src\Orpheus.Api\Orpheus.Api.csproj", "{9825EBA2-589A-4A8E-8EE5-B026D48F573A}"
 EndProject

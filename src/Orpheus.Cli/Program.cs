@@ -1,10 +1,10 @@
+using Orpheus.Adapters.Personas;
+using Orpheus.Adapters.Speech;
+using Orpheus.Adapters.Transformation;
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Exceptions;
 using Orpheus.Core.Models;
 using Orpheus.Core.Services;
-using Orpheus.Infrastructure.Personas;
-using Orpheus.Infrastructure.Speech;
-using Orpheus.Infrastructure.Transformation;
 
 if (args.Length < 2)
 {

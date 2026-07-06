@@ -59,6 +59,7 @@ appsettings.Development.local.json
 # Runtime Data
 # =========================
 
+/.orpheus/
 /cache/
 /output/
 /voices/

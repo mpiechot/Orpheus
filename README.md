@@ -30,6 +30,8 @@ Orpheus is not:
 
 Users may configure their own local personas, voices, models, and providers outside the repository.
 
+See [Legal and repository boundary](docs/legal-boundary.md) for the repository asset boundary and committed persona review checklist.
+
 ## V1 Scope
 
 The first milestone is a deterministic local prototype.
@@ -38,7 +40,7 @@ V1 currently includes:
 
 - .NET solution
 - Orpheus.Core
-- Orpheus.Infrastructure
+- Orpheus.Adapters
 - Orpheus.Api
 - Orpheus.Cli
 - xUnit tests
@@ -49,6 +51,15 @@ V1 currently includes:
 - CLI command for generating transformed text and an audio result
 
 No real AI provider or real voice provider is required for V1, but the local stub pipeline should still return a deterministic audio result shape so clients can build against audio generation from the beginning.
+
+The real-audio V1 path will add local/private persona loading, persistent local voice identities, and a process-based provider adapter without committing voices, models, samples, generated voice data, or generated audio.
+
+Planning documents for that work:
+
+- [Voice runtime implementation plan](docs/voice-runtime-implementation-plan.md)
+- [Implementation backlog](docs/implementation-backlog.md)
+- [Provider evaluation](docs/provider-evaluation.md)
+- [Legal and repository boundary](docs/legal-boundary.md)
 
 ## Build and Test
 
@@ -106,6 +117,7 @@ Example fields:
 - id
 - displayName
 - description
+- previewText
 - speech.style
 - voice.provider
 - voice.voiceId
@@ -113,7 +125,25 @@ Example fields:
 
 Personas are text-only configuration. They may be generic, or they may explicitly describe the fictional character, game, movie, or other work they are inspired by. Committed personas must not include protected audio, extracted dialogue, proprietary assets, trained voice models, provider secrets, or generated audio.
 
-Private personas should be placed outside Git or in ignored local folders.
+Committed `previewText` values must be original, generic text. They must not quote or closely reproduce protected dialogue, lyrics, scripts, or extracted game text.
+
+Private personas should be placed outside Git or in ignored local folders. Local/private personas may add optional runtime voice asset references for the user's own machine, but committed personas must not.
+
+Default local development path:
+
+```text
+.orpheus/personas/
+```
+
+Local personas with the same `id` as a committed sample persona override the committed sample at runtime.
+
+## Runtime Voice Data
+
+Real providers must use a stable local voice identity per persona. If a local persona provides voice assets, those assets take precedence. If it does not, a capable provider may generate or materialize a voice identity once and reuse it for future synthesis requests.
+
+Generated voice profiles, embeddings, reference audio, provider metadata, last-input state, and audio cache files are runtime data. They belong under `.orpheus/` or another ignored local runtime folder and must not be committed.
+
+Voice regeneration should create a candidate voice identity first. Accepting the candidate makes it active and may clean up rejected or stale candidates. Audio cache keys must include the active voice identity version or fingerprint so old audio is not reused for a different active voice.
 
 ## Repository Safety Rules
 

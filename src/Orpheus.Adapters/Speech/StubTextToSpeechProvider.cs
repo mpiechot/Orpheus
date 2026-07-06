@@ -1,7 +1,7 @@
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Models;
 
-namespace Orpheus.Infrastructure.Speech;
+namespace Orpheus.Adapters.Speech;
 
 public sealed class StubTextToSpeechProvider : ITextToSpeechProvider
 {

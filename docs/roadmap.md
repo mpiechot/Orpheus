@@ -10,7 +10,7 @@ Deliverables:
 
 - solution file
 - Core project
-- Infrastructure project
+- Adapters project
 - API project
 - CLI project
 - test projects
@@ -51,7 +51,21 @@ Deliverables:
 - CLI command
 - tests
 
-## M4 - Persona Files
+## M4 - Adapter Project Rename
+
+Goal: Keep the concrete implementation project named Orpheus.Adapters before real provider work expands.
+
+Status: Complete.
+
+Deliverables:
+
+- project rename
+- namespace rename
+- solution reference updates
+- test reference updates
+- documentation updates
+
+## M5 - Persona Files
 
 Goal: Load personas from local files.
 
@@ -59,35 +73,87 @@ Deliverables:
 
 - JSON persona format
 - sample personas
+- optional `previewText`
 - persona repository
 - validation
+- `.orpheus/personas` local override folder
+- optional `ORPHEUS_PERSONA_PATHS` later
+- local persona source diagnostics
+- strict committed-vs-local validation
+- local persona example file
 - tests
 
-## M5 - Audio Cache
+## M6 - Runtime Voice Metadata
 
-Goal: Avoid regenerating identical output.
+Goal: Keep local voice assets outside Core while still making them available to provider adapters.
+
+Deliverables:
+
+- local-only `voice.assets` parsing
+- common asset fields such as `speakerSample`, `referenceAudio`, `modelPath`, and `speakerEmbedding`
+- provider-specific `providerSettings`
+- runtime metadata store or resolver
+- relative path resolution from the persona file location
+- synth-time asset existence validation
+- tests
+
+## M7 - Voice Identity Lifecycle
+
+Goal: Generate or resolve a stable voice identity once per persona and reuse it.
+
+Deliverables:
+
+- ignored `.orpheus/voices` runtime storage
+- active/candidate/rejected lifecycle
+- fingerprinting from persona, provider, voice, settings, and asset metadata
+- stale voice warning behavior
+- CLI voice status/regenerate/accept/reject commands
+- preview text selection
+- local last-original-text state
+- tests
+
+## M8 - Audio Cache
+
+Goal: Avoid regenerating identical output while respecting active voice identity.
 
 Deliverables:
 
 - cache key
 - cache interface
 - file-based cache implementation
+- active voice identity version or fingerprint in cache key
 - ignored cache directory
 - tests
 
-## M6 - Provider Abstractions
+## M9 - Provider Process Adapter
 
 Goal: Prepare real providers without coupling Core to them.
 
 Deliverables:
 
 - provider configuration model
-- local provider interface
-- remote provider interface
+- local process adapter
+- command configuration
 - failure handling
 - timeout handling
+- output-file validation
+- path safety
+- no shell string concatenation for asset arguments
+- provider evaluation
 
-## M7 - Navigation Event Model
+## M10 - Legal and Repository Boundary
+
+Goal: Keep the repository generic and free of protected runtime assets.
+
+Deliverables:
+
+- license decision
+- legal-boundary document
+- README safety rules
+- committed persona review checklist
+- runtime asset ignore rules
+
+## M11 - Navigation Event Model
 
 Goal: Add navigation-specific input without making Orpheus a navigation app.
 
@@ -100,7 +166,7 @@ Deliverables:
 - interruption rules
 - tests
 
-## M8 - Story Mode Prototype
+## M12 - Story Mode Prototype
 
 Goal: Allow a persona to speak between required instructions.
 
@@ -112,7 +178,7 @@ Deliverables:
 - silence rules
 - tests
 
-## M9 - Client Prototypes
+## M13 - Client Prototypes
 
 Goal: Explore integrations.
 

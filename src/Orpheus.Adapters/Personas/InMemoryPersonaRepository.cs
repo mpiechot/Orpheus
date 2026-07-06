@@ -1,7 +1,7 @@
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Models;
 
-namespace Orpheus.Infrastructure.Personas;
+namespace Orpheus.Adapters.Personas;
 
 public sealed class InMemoryPersonaRepository : IPersonaRepository
 {

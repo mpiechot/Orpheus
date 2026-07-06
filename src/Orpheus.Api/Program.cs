@@ -1,9 +1,9 @@
 using Orpheus.Api;
+using Orpheus.Adapters.Personas;
+using Orpheus.Adapters.Speech;
+using Orpheus.Adapters.Transformation;
 using Orpheus.Core.Abstractions;
 using Orpheus.Core.Services;
-using Orpheus.Infrastructure.Personas;
-using Orpheus.Infrastructure.Speech;
-using Orpheus.Infrastructure.Transformation;
 
 var builder = WebApplication.CreateBuilder(args);
 

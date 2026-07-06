@@ -122,6 +122,8 @@ Deliverables:
 
 Goal: Avoid regenerating identical output while respecting active voice identity.
 
+Status: Partial. Deterministic WAV output files are reused for equivalent provider/persona/text/voice-style requests. Active voice identity isolation remains blocked by M7.
+
 Deliverables:
 
 - cache key

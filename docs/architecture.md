@@ -46,6 +46,8 @@ Initial responsibilities:
 
 - stub persona transformer
 - stub TTS provider
+- deterministic WAV audio provider
+- optional Windows SAPI process provider
 - in-memory persona repository for tests and simple development
 - file-based persona repository
 - committed sample persona loading
@@ -104,7 +106,7 @@ Future commands:
 3. Persona repository resolves the persona.
 4. Persona transformer creates persona-specific text.
 5. The TTS adapter resolves the active local voice identity for the persona.
-6. The TTS adapter creates or stubs audio output.
+6. The TTS adapter creates or stubs audio output. The default development provider writes a deterministic WAV file under `.orpheus/audio`.
 7. Audio cache stores or reuses generated audio.
 8. Response returns transformed text and optional audio location.
 

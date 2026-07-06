@@ -8,7 +8,6 @@ using Orpheus.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var contentRootPath = builder.Environment.ContentRootPath;
-var storeLastOriginalText = builder.Configuration.GetValue("Orpheus:State:StoreLastOriginalText", true);
 
 builder.Services.AddSingleton(_ => PersonaRepositoryFactory.CreateDefault(contentRootPath));
 builder.Services.AddSingleton<IPersonaRepository>(services => services.GetRequiredService<FilePersonaRepository>());
@@ -16,9 +15,23 @@ builder.Services.AddSingleton<IPersonaRuntimeMetadataResolver>(services => servi
 builder.Services.AddSingleton<ILastSpeechTextStore>(_ => new FileLastSpeechTextStore(
     new FileLastSpeechTextStoreOptions(
         PersonaRepositoryFactory.ResolveRuntimeDirectory("state", contentRootPath),
-        storeLastOriginalText)));
+        builder.Configuration.GetValue("Orpheus:State:StoreLastOriginalText", true))));
 builder.Services.AddSingleton<IPersonaTransformer, StubPersonaTransformer>();
-builder.Services.AddSingleton<ITextToSpeechProvider, StubTextToSpeechProvider>();
+builder.Services.AddSingleton<ITextToSpeechProvider>(_ =>
+{
+    var speechProviderName = builder.Configuration.GetValue<string>("Orpheus:Speech:Provider")
+        ?? TextToSpeechProviderFactory.DefaultProviderName;
+    var audioOutputDirectory = builder.Configuration.GetValue<string>("Orpheus:Speech:OutputDirectory")
+        ?? PersonaRepositoryFactory.ResolveRuntimeDirectory("audio", contentRootPath);
+    var windowsSapiVoiceName = builder.Configuration.GetValue<string>("Orpheus:Speech:WindowsSapi:VoiceName");
+    var windowsSapiTimeoutSeconds = builder.Configuration.GetValue("Orpheus:Speech:WindowsSapi:TimeoutSeconds", 30);
+
+    return TextToSpeechProviderFactory.Create(
+        speechProviderName,
+        audioOutputDirectory,
+        windowsSapiVoiceName,
+        windowsSapiTimeoutSeconds);
+});
 builder.Services.AddSingleton<SpeechEngine>();
 
 var app = builder.Build();

@@ -6,12 +6,16 @@ using Orpheus.Api;
 
 namespace Orpheus.Api.Tests;
 
-public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>, IDisposable
 {
     private readonly HttpClient _client;
+    private readonly string _audioOutputDirectory;
 
     public SpeechEndpointTests(WebApplicationFactory<Program> factory)
     {
+        _audioOutputDirectory = Path.Combine(Path.GetTempPath(), "orpheus-api-tests", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(_audioOutputDirectory);
+
         _client = factory
             .WithWebHostBuilder(builder =>
             {
@@ -19,6 +23,8 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
                 {
                     configuration.AddInMemoryCollection(new Dictionary<string, string?>
                     {
+                        ["Orpheus:Speech:Provider"] = "deterministic-wav",
+                        ["Orpheus:Speech:OutputDirectory"] = _audioOutputDirectory,
                         ["Orpheus:State:StoreLastOriginalText"] = "false"
                     });
                 });
@@ -38,7 +44,10 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.NotNull(body);
         Assert.Equal("wise-master", body.Persona);
         Assert.Equal("In 500 meters, turn right, you should.", body.Text);
-        Assert.Equal("stub://wise-master-placeholder/speech", body.AudioFile);
+        var audioPath = new Uri(body.AudioFile).LocalPath;
+        Assert.StartsWith(_audioOutputDirectory, audioPath, StringComparison.OrdinalIgnoreCase);
+        Assert.True(File.Exists(audioPath));
+        Assert.True(new FileInfo(audioPath).Length > 44);
     }
 
     [Fact]
@@ -63,5 +72,14 @@ public class SpeechEndpointTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         var body = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         Assert.Equal("Text is required.", body?.Error);
+    }
+
+    public void Dispose()
+    {
+        _client.Dispose();
+        if (Directory.Exists(_audioOutputDirectory))
+        {
+            Directory.Delete(_audioOutputDirectory, recursive: true);
+        }
     }
 }

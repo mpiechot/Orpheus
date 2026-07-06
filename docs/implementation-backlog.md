@@ -175,6 +175,8 @@ Expose the minimal voice lifecycle through CLI commands.
 
 **Blocked by**: Slice 7.
 
+**Partial progress**: The deterministic WAV provider already reuses equivalent generated files and keys them by provider, persona id, requested persona voice, voice style, and transformed text. Full active-voice identity isolation is still blocked by Slice 7.
+
 **User stories covered**: Correct audio after voice changes.
 
 ### What to build

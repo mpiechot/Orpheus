@@ -50,11 +50,11 @@ V1 currently includes:
 - optional persona `previewText`
 - local last-original-text state under `.orpheus/state`
 - stub persona transformer
-- stub TTS provider
+- deterministic WAV audio provider writing files under `.orpheus/audio`
 - POST /speak endpoint
 - CLI command for generating transformed text and an audio result
 
-No real AI provider or real voice provider is required for V1, but the local stub pipeline should still return a deterministic audio result shape so clients can build against audio generation from the beginning.
+No real AI provider or real voice provider is required for V1, but the local pipeline now writes a deterministic WAV file so clients can build against real audio-file output from the beginning.
 
 The real-audio V1 path will add local/private persona loading, persistent local voice identities, and a process-based provider adapter without committing voices, models, samples, generated voice data, or generated audio.
 
@@ -88,7 +88,7 @@ Output:
 
 ```text
 In 500 meters, turn right, you should.
-stub://wise-master-placeholder/speech
+file:///C:/path/to/Orpheus/.orpheus/audio/wise-master-<hash>.wav
 ```
 
 ## Example API
@@ -108,7 +108,7 @@ Response:
 {
   "persona": "wise-master",
   "text": "In 500 meters, turn right, you should.",
-  "audioFile": "stub://wise-master-placeholder/speech"
+  "audioFile": "file:///C:/path/to/Orpheus/.orpheus/audio/wise-master-<hash>.wav"
 }
 ```
 
@@ -164,6 +164,8 @@ The API can disable this behavior with:
 Real providers must use a stable local voice identity per persona. If a local persona provides voice assets, those assets take precedence. If it does not, a capable provider may generate or materialize a voice identity once and reuse it for future synthesis requests.
 
 Generated voice profiles, embeddings, reference audio, provider metadata, last-input state, and audio cache files are runtime data. They belong under `.orpheus/` or another ignored local runtime folder and must not be committed.
+
+The default development provider is `deterministic-wav`. It writes a valid local WAV file, but it is not real spoken TTS. On Windows, `windows-sapi` can be selected experimentally through `Orpheus:Speech:Provider` when the local SAPI installation can synthesize from the current process.
 
 Voice regeneration should create a candidate voice identity first. Accepting the candidate makes it active and may clean up rejected or stale candidates. Audio cache keys must include the active voice identity version or fingerprint so old audio is not reused for a different active voice.
 

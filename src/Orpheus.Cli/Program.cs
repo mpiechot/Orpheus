@@ -20,7 +20,9 @@ var text = string.Join(' ', args.Skip(1));
 var filePersonaRepository = PersonaRepositoryFactory.CreateDefault();
 IPersonaRepository personaRepository = filePersonaRepository;
 IPersonaTransformer personaTransformer = new StubPersonaTransformer();
-ITextToSpeechProvider textToSpeechProvider = new StubTextToSpeechProvider();
+ITextToSpeechProvider textToSpeechProvider = TextToSpeechProviderFactory.Create(
+    TextToSpeechProviderFactory.DefaultProviderName,
+    PersonaRepositoryFactory.ResolveRuntimeDirectory("audio"));
 ILastSpeechTextStore lastSpeechTextStore = new FileLastSpeechTextStore(
     new FileLastSpeechTextStoreOptions(PersonaRepositoryFactory.ResolveRuntimeDirectory("state")));
 var speechEngine = new SpeechEngine(personaRepository, personaTransformer, textToSpeechProvider, lastSpeechTextStore);
